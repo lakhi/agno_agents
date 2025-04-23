@@ -7,6 +7,20 @@ from agno.vectordb.chroma import ChromaDb
 from agno.embedder.sentence_transformer import SentenceTransformerEmbedder
 from dotenv import load_dotenv
 
+"""
+TODO: 
+<commit each step of the agent as and when any of this is achieved>
+1. add memory to the agent
+2. if it does not know the answer to a medical question, it suggests to ask a doctor
+3. style the agent to be warm and friendly
+4. customizable between only using the knowledge base or using the internet
+5. chatbot should be PROACTIVE: it should ask follow up questions
+
+THINK ABOUT:
+1. Data Security / Privacy: you must have answers to the question of WHERE THE DATA IS STORED?
+2. Data Access: researchers should be able to access the stored conversations
+"""
+
 load_dotenv(dotenv_path="/Users/lakhi/Developer/uni-studAsst-projects/ai_agents_ws/.env")
 
 # Create a knowledge base from the PDF file
@@ -31,7 +45,6 @@ marhinovirus_agent = Agent(
     search_knowledge=True,
 )
 
-# build memory into the agent
 
 marhinovirus_agent.knowledge.load(recreate=False)
 
