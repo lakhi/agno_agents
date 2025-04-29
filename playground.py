@@ -6,6 +6,8 @@ import os
 from agno.vectordb.chroma import ChromaDb
 from agno.embedder.sentence_transformer import SentenceTransformerEmbedder
 from dotenv import load_dotenv
+from agno.memory.v2.memory import Memory
+from agno.storage.sqlite import SqliteStorage
 
 """
 TODO: 
@@ -23,28 +25,35 @@ THINK ABOUT:
 
 load_dotenv(dotenv_path="/Users/lakhi/Developer/uni-studAsst-projects/ai_agents_ws/.env")
 
-# Create a knowledge base from the PDF file
 pdf_path = os.path.join(os.path.dirname(__file__), "faq_marhinovirus_en.pdf")
 knowledge_base = PDFKnowledgeBase(
     path=pdf_path,
     vector_db=ChromaDb(collection="virus", embedder=SentenceTransformerEmbedder()),
 )
 
+# memory = Memory(
+#     model=Groq(id="llama-3.3-70b-versatile"),
+# )
+
 marhinovirus_agent = Agent(
-    model=Groq(id="llama-3.3-70b-versatile"),
+    model=Groq(id="deepseek-r1-distill-llama-70b"),
+    description="You are a friendly and helpful chatbot that answers queries in the best way possible",
     instructions=[
-        "start the conversation", 
-        "Ask the user how you can help them",
-        "Be helpful and friendly",
-        "after each response, ask the user if they have any other questions",
+        "Always search the knowledge base",
+        "After each response, ask the user if they have any other questions",
+        "In case you do not find the answer to a medical question, please suggest the user to consult a medical health professional."
     ],
-    add_history_to_messages=True,
     markdown=True,
     monitoring=True,
     knowledge=knowledge_base,
-    search_knowledge=True,
+    add_references=True,
+    storage=SqliteStorage(table_name="agent_sessions", db_file="tmp/data.db"),
+    add_history_to_messages=True,
+    num_history_runs=3,
+    # memory=memory,
+    # enable_agentic_memory=True,
+    # enable_user_memories=True,
 )
-
 
 marhinovirus_agent.knowledge.load(recreate=False)
 
