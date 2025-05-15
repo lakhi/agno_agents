@@ -14,8 +14,9 @@ from agno.models.google import Gemini
 """
 TODO: 
 <commit each step of the agent as and when any of this is achieved>
-0. work on Sabrina's feedback
-0. work on Rian's feedback: 
+0. add images support to the agent (through a different embedder - take off from recent Claude answer)
+1. work on Sabrina's feedback
+1. work on Rian's feedback: 
     a) concise answers (we don't want to overwhelm people with information excess)
     b) simpler language: 
         i. avoid complicated words
@@ -37,6 +38,7 @@ THINK ABOUT:
 load_dotenv(dotenv_path="/Users/lakhi/Developer/uni-studAsst-projects/ai_agents_ws/.env")
 
 pdf_path = os.path.join(os.path.dirname(__file__), "faq_marhinovirus_en.pdf")
+
 knowledge_base = PDFKnowledgeBase(
     path=pdf_path,
     vector_db=ChromaDb(collection="virus", embedder=SentenceTransformerEmbedder()),
