@@ -24,3 +24,4 @@ venv/
 Thumbs.db
 tmp/data.db
 .qodo
+health_research_network_agent/tmp/data.db
