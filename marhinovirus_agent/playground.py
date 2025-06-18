@@ -1,5 +1,5 @@
 from agno.agent import Agent
-from agno.models.groq import Groq
+# from agno.models.groq import Groq
 from agno.playground import Playground, serve_playground_app
 from agno.knowledge.pdf import PDFKnowledgeBase
 import os
@@ -37,10 +37,8 @@ THINK ABOUT:
 
 load_dotenv(dotenv_path="/Users/lakhi/Developer/uni-studAsst-projects/ai_agents_ws/.env")
 
-pdf_path = os.path.join(os.path.dirname(__file__), "faq_marhinovirus_en.pdf")
-
 knowledge_base = PDFKnowledgeBase(
-    path=pdf_path,
+    path="knowledge_base_pdfs",
     vector_db=ChromaDb(collection="virus", embedder=SentenceTransformerEmbedder()),
 )
 
@@ -62,8 +60,10 @@ marhinovirus_agent = Agent(
     # description="You are a friendly and helpful chatbot that answers queries in the best way possible",
     description="You are a friendly and helpful chatbot that answers queries in a concise manner yet encourages the user gain more information about the topic",
     instructions=[
+        "Use the following language style: avoid complicated words, use shorter and simpler sentences",
         "Always search the knowledge base if the user's question involves the words 'marhinovirus' or 'marhinitis', or any similar contextual information about infectious diseases, vaccinations, etc.",
         "After each response, suggest relevant followup questions that encourage the user to understand the topic better",
+        "The suggested followup questions should have answers in the knowledge base",
         "In case you do not find the answer to a medical question, please suggest the user to consult a medical health professional."
     ],
     markdown=True,
